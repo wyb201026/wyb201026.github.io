@@ -27,7 +27,7 @@
 <meta property="og:description" content="多项式提要这是我自 22 年来的第一次总结性博客，还是希望有效果，不要本末倒置。 多项式基本可以和生成函数画上等号，只不过多项式更偏重快速计算方面。 一般来说都是借助倍增来解决问题的。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-04-30T09:09:05.000Z">
-<meta property="article:modified_time" content="2024-04-30T09:19:00.248Z">
+<meta property="article:modified_time" content="2024-04-30T09:26:31.153Z">
 <meta property="article:author" content="wyb201026">
 <meta property="article:tag" content="多项式">
 <meta property="article:tag" content="总结">
@@ -233,7 +233,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-04-30 17:09:05 / Modified: 17:19:00" itemprop="dateCreated datePublished" datetime="2024-04-30T17:09:05+08:00">2024-04-30</time>
+      <time title="Created: 2024-04-30 17:09:05 / Modified: 17:26:31" itemprop="dateCreated datePublished" datetime="2024-04-30T17:09:05+08:00">2024-04-30</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -291,21 +291,39 @@
 <p>我们可以这么理解，即在复数平面上以原点为圆心，$1$ 为半径画单位圆，那么 $n$ 次单位根就是将整个单位圆 $n$ 等分（$(1, 0)$ 肯定是的）。</p>
 <p>我们定义 $\omega_n^k$ 为 $n$ 个单位根按照辐角排序后的第 $k$ 个复数，初始是 $\omega_n^0 = 1$。</p>
 <h3 id="单位根的性质"><a href="#单位根的性质" class="headerlink" title="单位根的性质"></a>单位根的性质</h3><p>不难发现，由于是在单位圆上，所以：</p>
-<script type="math/tex; mode=display">\omega_{n}^{k} = \cos \frac{2\pi k}{n} + i \sin \frac{2\pi k}{n}</script><p>由于模长相乘，辐角相加，所以：</p>
-<script type="math/tex; mode=display">(\omega_{n}^{k_1})^{k_2} = \omega_{n}^{k_1k_2}</script><p>然后几个基本性质：</p>
-<script type="math/tex; mode=display">\omega_{n}^{k} = \omega_{pn}^{pk}</script><script type="math/tex; mode=display">\omega_{n}^{k + \frac{n}{2}} = -\omega_{n}^{k}</script><script type="math/tex; mode=display">\omega_{n}^{k_1}\omega_{n}^{k_2} = \omega_{n}^{k_1 + k_2}</script><p>数学家们已经证明，拥有这些性质的在复数域中只有单位根一个。</p>
+<script type="math/tex; mode=display">
+\omega_{n}^{k} = \cos \frac{2\pi k}{n} + i \sin \frac{2\pi k}{n}</script><p>由于模长相乘，辐角相加，所以：</p>
+<script type="math/tex; mode=display">
+(\omega_{n}^{k_1})^{k_2} = \omega_{n}^{k_1k_2}</script><p>然后几个基本性质：</p>
+<script type="math/tex; mode=display">
+\omega_{n}^{k} = \omega_{pn}^{pk}</script><script type="math/tex; mode=display">
+\omega_{n}^{k + \frac{n}{2}} = -\omega_{n}^{k}</script><script type="math/tex; mode=display">
+\omega_{n}^{k_1}\omega_{n}^{k_2} = \omega_{n}^{k_1 + k_2}</script><p>数学家们已经证明，拥有这些性质的在复数域中只有单位根一个。</p>
 <h2 id="DFT"><a href="#DFT" class="headerlink" title="DFT"></a>DFT</h2><p>其实就是随便选取 $n + 1$ 个点值，然后转化为多项式（或者反之），这里选择单位根带进去。</p>
 <p>通俗的说法就是多项式乘法的算法（FFT 和 NTT）。</p>
 <p>普通的 DFT 是 $O(n^2)$ 的。</p>
 <h2 id="FFT-1"><a href="#FFT-1" class="headerlink" title="FFT"></a>FFT</h2><p><strong>我们默认 $n$ 为 $2$ 的正整数次幂，不够可以末尾补 $0$。</strong></p>
 <p>现在是将多项式表示为点值。</p>
 <p>我们知道：</p>
-<script type="math/tex; mode=display">F(x) = \sum_{i = 0}^{n - 1} a_i x ^i</script><p>我们按照<strong>奇偶性</strong>分成两块：</p>
-<script type="math/tex; mode=display">F(x) = (a_0 + a_2x^2 + ... + a_{n - 2}x^{n - 2}) + (a_1x + a_3x^3 + ... + a_{n - 1}x^{n - 1})</script><script type="math/tex; mode=display">F(x) = (a_0 + a_2x^2 + ... + a_{n - 2}x^{n - 2}) + x(a_1 + a_3x^2 + ... + a_{n - 1}x^{n - 2})</script><p>我们令：</p>
-<script type="math/tex; mode=display">F_1(x) = a_0 + a_2x + a_4x^2 + ... + a_{n - 2}x^{\frac{n}{2} - 1}</script><script type="math/tex; mode=display">F_2(x) = a_1 + a_3x + a_5x^2 + ... + a_{n - 1}x^{\frac{n}{2} - 1}</script><p>则：</p>
-<script type="math/tex; mode=display">F(x) = F_1(x^2) + xF_2(x^2)</script><p>先带入 $\omega_{n}^{k}(k &lt; \frac{n}{2})$，得：</p>
-<script type="math/tex; mode=display">F(\omega_{n}^{k}) = F_1((\omega_{n}^{k})^2) + \omega_{n}^{k}F_2((\omega_{n}^{k})^2)</script><script type="math/tex; mode=display">F(\omega_{n}^{k}) = F_1 (\omega_{n}^{2k}) + \omega_{n}^{k}F_2(\omega_{n}^{2k})</script><script type="math/tex; mode=display">F(\omega_{n}^{k}) = F_1 (\omega_{\frac{n}{2}}^{k}) + \omega_{n}^{k}F_2(\omega_{\frac{n}{2}}^{k})</script><p>那么对于 $\omega_{n}^{k + \frac{n}{2}}$ 来说，带入得：</p>
-<script type="math/tex; mode=display">F(\omega_{n}^{k + \frac{n}{2}}) = F_1(\omega_{n}^{2k + n}) + \omega_{n}^{k + \frac{n}{2}}F_2(\omega_{n}^{2k + n})</script><script type="math/tex; mode=display">F(\omega_{n}^{k + \frac{n}{2}}) = F_1(\omega_{n}^{2k} \omega_{n}^{n}) - \omega_{n}^{k}F_2(\omega_{n}^{2k} \omega_{n}^{n})</script><script type="math/tex; mode=display">F(\omega_{n}^{k + \frac{n}{2}}) = F_1(\omega_{n}^{2k}) - \omega_{n}^{k}F_2(\omega_{n}^{2k})</script><script type="math/tex; mode=display">F(\omega_{n}^{k + \frac{n}{2}}) = F_1 (\omega_{\frac{n}{2}}^{k}) - \omega_{n}^{k}F_2(\omega_{\frac{n}{2}}^{k})</script><p>我们发现上面两个柿子的最终结果只有第二项符号不同，所以我们知道了第一个就可以求第二个了，所以我们就可以递归了。</p>
+<script type="math/tex; mode=display">
+F(x) = \sum_{i = 0}^{n - 1} a_i x ^i</script><p>我们按照<strong>奇偶性</strong>分成两块：</p>
+<script type="math/tex; mode=display">
+F(x) = (a_0 + a_2x^2 + ... + a_{n - 2}x^{n - 2}) + (a_1x + a_3x^3 + ... + a_{n - 1}x^{n - 1})</script><script type="math/tex; mode=display">
+F(x) = (a_0 + a_2x^2 + ... + a_{n - 2}x^{n - 2}) + x(a_1 + a_3x^2 + ... + a_{n - 1}x^{n - 2})</script><p>我们令：</p>
+<script type="math/tex; mode=display">
+F_1(x) = a_0 + a_2x + a_4x^2 + ... + a_{n - 2}x^{\frac{n}{2} - 1}</script><script type="math/tex; mode=display">
+F_2(x) = a_1 + a_3x + a_5x^2 + ... + a_{n - 1}x^{\frac{n}{2} - 1}</script><p>则：</p>
+<script type="math/tex; mode=display">
+F(x) = F_1(x^2) + xF_2(x^2)</script><p>先带入 $\omega_{n}^{k}(k &lt; \frac{n}{2})$，得：</p>
+<script type="math/tex; mode=display">
+F(\omega_{n}^{k}) = F_1((\omega_{n}^{k})^2) + \omega_{n}^{k}F_2((\omega_{n}^{k})^2)</script><script type="math/tex; mode=display">
+F(\omega_{n}^{k}) = F_1 (\omega_{n}^{2k}) + \omega_{n}^{k}F_2(\omega_{n}^{2k})</script><script type="math/tex; mode=display">
+F(\omega_{n}^{k}) = F_1 (\omega_{\frac{n}{2}}^{k}) + \omega_{n}^{k}F_2(\omega_{\frac{n}{2}}^{k})</script><p>那么对于 $\omega_{n}^{k + \frac{n}{2}}$ 来说，带入得：</p>
+<script type="math/tex; mode=display">
+F(\omega_{n}^{k + \frac{n}{2}}) = F_1(\omega_{n}^{2k + n}) + \omega_{n}^{k + \frac{n}{2}}F_2(\omega_{n}^{2k + n})</script><script type="math/tex; mode=display">
+F(\omega_{n}^{k + \frac{n}{2}}) = F_1(\omega_{n}^{2k} \omega_{n}^{n}) - \omega_{n}^{k}F_2(\omega_{n}^{2k} \omega_{n}^{n})</script><script type="math/tex; mode=display">
+F(\omega_{n}^{k + \frac{n}{2}}) = F_1(\omega_{n}^{2k}) - \omega_{n}^{k}F_2(\omega_{n}^{2k})</script><script type="math/tex; mode=display">
+F(\omega_{n}^{k + \frac{n}{2}}) = F_1 (\omega_{\frac{n}{2}}^{k}) - \omega_{n}^{k}F_2(\omega_{\frac{n}{2}}^{k})</script><p>我们发现上面两个柿子的最终结果只有第二项符号不同，所以我们知道了第一个就可以求第二个了，所以我们就可以递归了。</p>
 <p>所以我们的时间复杂度就做到 $O(n \log_2 n)$ 的了，判断一下如果长度为 $1$ 就直接返回就 OK 了。</p>
 <p>然后你发现，这只是把系数转化为数值的操作，那还有数值转化为系数呢？</p>
 <h2 id="IFFT"><a href="#IFFT" class="headerlink" title="IFFT"></a>IFFT</h2><p>结论是：把求出的数值乘积作为另一个多项式 $G$ 的系数，然后把那 $n$ 个单位根的倒数进去求数值，求出的数值除以 $n$ 就是原多项式的系数。</p>
@@ -313,21 +331,32 @@
 <p>设 $(y_0, y_1, …, y_{n - 1})$ 为把那个点值带进去求得的 $y$ 值。</p>
 <p>我们把单位根的倒数 $\omega_{n}^{0}, \omega_{n}^{-1}, …, \omega_{n}^{-(n - 1)}$ 带进以数值为系数的多项式 $G$（从低到高），得到新的 $y$ 值 $(p_0, p_1, …, p_{n - 1})$。</p>
 <p>我们推一下柿子：</p>
-<script type="math/tex; mode=display">p_k = \sum_{i = 0}^{n - 1}y_i(\omega_{n}^{-k})^i</script><script type="math/tex; mode=display">p_k = \sum_{i = 0}^{n - 1}\left(\sum_{j = 0}^{n - 1}a_j(\omega_{n}^{i})^j\right)(\omega_{n}^{-k})^i</script><script type="math/tex; mode=display">p_k = \sum_{j = 0}^{n - 1}a_j\left(\sum_{i = 0}^{n - 1}(\omega_{n}^{j - k})^i\right)</script><p>$\left(\sum\limits_{i = 0}^{n - 1}(\omega_{n}^{j - k})^i\right)$ 是可以弄出来的，根据等比数列可得，$j - k = 0$ 时，等于 $n$，其他时候都等于 $0$，这里就不具体说明了。</p>
+<script type="math/tex; mode=display">
+p_k = \sum_{i = 0}^{n - 1}y_i(\omega_{n}^{-k})^i</script><script type="math/tex; mode=display">
+p_k = \sum_{i = 0}^{n - 1}\left(\sum_{j = 0}^{n - 1}a_j(\omega_{n}^{i})^j\right)(\omega_{n}^{-k})^i</script><script type="math/tex; mode=display">
+p_k = \sum_{j = 0}^{n - 1}a_j\left(\sum_{i = 0}^{n - 1}(\omega_{n}^{j - k})^i\right)</script><p>$\left(\sum\limits_{i = 0}^{n - 1}(\omega_{n}^{j - k})^i\right)$ 是可以弄出来的，根据等比数列可得，$j - k = 0$ 时，等于 $n$，其他时候都等于 $0$，这里就不具体说明了。</p>
 <p>则 $p_k = na_k$，所以 $a_i = \frac{p_i}{n}$。</p>
 <p>这样我们就完成了点值转系数的过程了。</p>
 <h2 id="FFT-的基本形式"><a href="#FFT-的基本形式" class="headerlink" title="FFT 的基本形式"></a>FFT 的基本形式</h2><p>考虑到 FFT 解决的是多项式乘法问题，那么形式有以下几种：</p>
-<script type="math/tex; mode=display">\sum_{i = 0}^n a_i \cdot b_{n - i}</script><script type="math/tex; mode=display">\sum_{i + j = n} a_i \cdot b_{j}</script><p>常用的技巧有翻转，平移和换项。</p>
+<script type="math/tex; mode=display">
+\sum_{i = 0}^n a_i \cdot b_{n - i}</script><script type="math/tex; mode=display">
+\sum_{i + j = n} a_i \cdot b_{j}</script><p>常用的技巧有翻转，平移和换项。</p>
 <h1 id="NTT"><a href="#NTT" class="headerlink" title="NTT"></a>NTT</h1><h2 id="简单转换"><a href="#简单转换" class="headerlink" title="简单转换"></a>简单转换</h2><p>我们发现在模意义下单位根就是原根，所以我们把单位根换成原根，单位根的倒数换成其原根的逆元，最后的除以 $n$ 也换成逆元，就好了（前提是模数要求，否则得用 CRT 实现 MTT）。</p>
 <h1 id="多项式求逆"><a href="#多项式求逆" class="headerlink" title="多项式求逆"></a>多项式求逆</h1><p>我们还是设 $n$ 为 $2$ 的正整数次幂。</p>
 <p>考虑倍增的过程，设 $A \cdot B’ \equiv 1 (\bmod  x^\frac{n}{2}), A \cdot B \equiv 1(\bmod  x^n)$。</p>
 <p>简单得到：</p>
-<script type="math/tex; mode=display">A \cdot B \equiv 1(\bmod \ x^\frac{n}{2})</script><p>相减可得：</p>
-<script type="math/tex; mode=display">(B' - B) \equiv 0(\bmod \ x^\frac{n}{2})</script><p>平方得</p>
-<script type="math/tex; mode=display">(B' - B)^2 \equiv 0(\bmod \ x^n)</script><p>拆开得：</p>
-<script type="math/tex; mode=display">B'^2 - 2BB' + B^2 \equiv 0(\bmod \ x^n)</script><p>同时乘 $A$，得：</p>
-<script type="math/tex; mode=display">AB'^2 - 2B' + B \equiv 0(\bmod \ x^n)</script><p>移项得：</p>
-<script type="math/tex; mode=display">B \equiv AB'^2 - 2B'(\bmod \ x^n)</script><p>然后就可以递推求了。</p>
+<script type="math/tex; mode=display">
+A \cdot B \equiv 1(\bmod \ x^\frac{n}{2})</script><p>相减可得：</p>
+<script type="math/tex; mode=display">
+(B' - B) \equiv 0(\bmod \ x^\frac{n}{2})</script><p>平方得</p>
+<script type="math/tex; mode=display">
+(B' - B)^2 \equiv 0(\bmod \ x^n)</script><p>拆开得：</p>
+<script type="math/tex; mode=display">
+B'^2 - 2BB' + B^2 \equiv 0(\bmod \ x^n)</script><p>同时乘 $A$，得：</p>
+<script type="math/tex; mode=display">
+AB'^2 - 2B' + B \equiv 0(\bmod \ x^n)</script><p>移项得：</p>
+<script type="math/tex; mode=display">
+B \equiv AB'^2 - 2B'(\bmod \ x^n)</script><p>然后就可以递推求了。</p>
 
     </div>
 
