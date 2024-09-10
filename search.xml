@@ -55,13 +55,13 @@ F(\omega_{n}^{k + \frac{n}{2}}) = F_1 (\omega_{\frac{n}{2}}^{k}) - \omega_{n}^{k
 <p>然后你发现，这只是把系数转化为数值的操作，那还有数值转化为系数呢？</p>
 <h2 id="IFFT"><a href="#IFFT" class="headerlink" title="IFFT"></a>IFFT</h2><p>结论是：把求出的数值乘积作为另一个多项式 $G$ 的系数，然后把那 $n$ 个单位根的倒数进去求数值，求出的数值除以 $n$ 就是原多项式的系数。</p>
 <p>具体证明：</p>
-<p>设 $(y_0, y_1, …, y_{n - 1})$ 为把那个点值带进去求得的 $y$ 值。</p>
-<p>我们把单位根的倒数 $\omega_{n}^{0}, \omega_{n}^{-1}, …, \omega_{n}^{-(n - 1)}$ 带进以数值为系数的多项式 $G$（从低到高），得到新的 $y$ 值 $(p_0, p_1, …, p_{n - 1})$。</p>
+<p>设 $(y<em>0, y_1, …, y</em>{n - 1})$ 为把那个点值带进去求得的 $y$ 值。</p>
+<p>我们把单位根的倒数 $\omega<em>{n}^{0}, \omega</em>{n}^{-1}, …, \omega<em>{n}^{-(n - 1)}$ 带进以数值为系数的多项式 $G$（从低到高），得到新的 $y$ 值 $(p_0, p_1, …, p</em>{n - 1})$。</p>
 <p>我们推一下柿子：</p>
 <script type="math/tex; mode=display">
 p_k = \sum_{i = 0}^{n - 1}y_i(\omega_{n}^{-k})^i</script><script type="math/tex; mode=display">
 p_k = \sum_{i = 0}^{n - 1}\left(\sum_{j = 0}^{n - 1}a_j(\omega_{n}^{i})^j\right)(\omega_{n}^{-k})^i</script><script type="math/tex; mode=display">
-p_k = \sum_{j = 0}^{n - 1}a_j\left(\sum_{i = 0}^{n - 1}(\omega_{n}^{j - k})^i\right)</script><p>$\left(\sum\limits_{i = 0}^{n - 1}(\omega_{n}^{j - k})^i\right)$ 是可以弄出来的，根据等比数列可得，$j - k = 0$ 时，等于 $n$，其他时候都等于 $0$，这里就不具体说明了。</p>
+p_k = \sum_{j = 0}^{n - 1}a_j\left(\sum_{i = 0}^{n - 1}(\omega_{n}^{j - k})^i\right)</script><p>$\left(\sum\limits<em>{i = 0}^{n - 1}(\omega</em>{n}^{j - k})^i\right)$ 是可以弄出来的，根据等比数列可得，$j - k = 0$ 时，等于 $n$，其他时候都等于 $0$，这里就不具体说明了。</p>
 <p>则 $p_k = na_k$，所以 $a_i = \frac{p_i}{n}$。</p>
 <p>这样我们就完成了点值转系数的过程了。</p>
 <h2 id="FFT-的基本形式"><a href="#FFT-的基本形式" class="headerlink" title="FFT 的基本形式"></a>FFT 的基本形式</h2><p>考虑到 FFT 解决的是多项式乘法问题，那么形式有以下几种：</p>
@@ -70,7 +70,7 @@ p_k = \sum_{j = 0}^{n - 1}a_j\left(\sum_{i = 0}^{n - 1}(\omega_{n}^{j - k})^i\ri
 \sum_{i + j = n} a_i \cdot b_{j}</script><p>常用的技巧有翻转，平移和换项。</p>
 <h1 id="NTT"><a href="#NTT" class="headerlink" title="NTT"></a>NTT</h1><h2 id="简单转换"><a href="#简单转换" class="headerlink" title="简单转换"></a>简单转换</h2><p>我们发现在模意义下单位根就是原根，所以我们把单位根换成原根，单位根的倒数换成其原根的逆元，最后的除以 $n$ 也换成逆元，就好了（前提是模数要求，否则得用 CRT 实现 MTT）。</p>
 <h1 id="多项式求逆"><a href="#多项式求逆" class="headerlink" title="多项式求逆"></a>多项式求逆</h1><p>我们还是设 $n$ 为 $2$ 的正整数次幂。</p>
-<p>考虑倍增的过程，设 $A \cdot B’ \equiv 1 (\bmod  x^\frac{n}{2}), A \cdot B \equiv 1(\bmod  x^n)$。</p>
+<p>考虑倍增的过程，设 $A \cdot B’ \equiv 1 (\bmod \ x^\frac{n}{2}), A \cdot B \equiv 1(\bmod \ x^n)$。</p>
 <p>简单得到：</p>
 <script type="math/tex; mode=display">
 A \cdot B \equiv 1(\bmod \ x^\frac{n}{2})</script><p>相减可得：</p>
